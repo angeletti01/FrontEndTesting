@@ -5,19 +5,17 @@ import java.util.List;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.hamcrest.Matchers;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.google.gson.Gson;
 
-import org.testng.annotations.Ignore;
-
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
+
 
 public class SWAPITest {
 	private static final Logger log = LogManager.getLogger(SWAPITest.class);
@@ -44,6 +42,7 @@ public class SWAPITest {
 	}
 	@Test
 	public void nameTest() {
+		log.info("Name Test Running");
 		Response response = 	
 				RestAssured
 				.given()
@@ -88,7 +87,7 @@ public class SWAPITest {
 		Gson gson = new Gson();
 		String jsonConvert = gson.toJson(nameList);
 		
-		Assert.assertTrue(jsonConvert.contains("Darth Vader"));
+		Assert.assertTrue(jsonConvert.contains("Darth Vader"));		
 	}
 	
 }
