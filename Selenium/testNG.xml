@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding ="UTF-8"?>
+<!DOCTYPE  suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name = "Test-Suite">
+<test thread-count="5" name = "Page Object Model Project">
+<classes>
+<class name = "com.techbee.selenium.testng.tests.TestBase"/>
+<class name = "com.techbee.selenium.testng.tests.EbaySearchTest"/>
+</classes>
+</test>
+
+</suite>
