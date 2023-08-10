@@ -5,23 +5,20 @@ import java.util.List;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.hamcrest.Matchers;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.google.gson.Gson;
 
-import org.testng.annotations.Ignore;
-
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
 
 public class SWAPITest {
 	private static final Logger log = LogManager.getLogger(SWAPITest.class);
-	private final static String BASEURI = "https://swapi.dev/api/"; //1
+	private final static String BASEURI = "https://swapi.dev/api/"; 
 	private final static String BASEPATH = "people";
 	
 	@Test	
@@ -31,19 +28,23 @@ public class SWAPITest {
 		RestAssured	
 		.given()
 			.contentType(ContentType.JSON)	
-			.baseUri(BASEURI+"people")	
+			.baseUri(BASEURI+BASEPATH)	
 		.when()
 			.get()
 		.then()
 			.assertThat()
-			.statusCode(200)
-			.statusLine("HTTP/1.1 200 OK")
-			.header("Content-Type", "application/json")
+			.statusCode(200) // testing that status code is 200
+			.statusLine("HTTP/1.1 200 OK") // additional test
+			.header("Content-Type", "application/json") // additional test
 		.extract()
-			.response();		
+			.response();	
+		
+		Assert.assertEquals(response.getStatusCode(), 200); // different option to test status code
 	}
+	
 	@Test
 	public void nameTest() {
+		log.info("Name Test Running");
 		Response response = 	
 				RestAssured
 				.given()
@@ -51,11 +52,7 @@ public class SWAPITest {
 					.baseUri(BASEURI+BASEPATH)	
 				.when()
 					.get()
-				.then()
-					.assertThat()
-					.statusCode(200)
-					.statusLine("HTTP/1.1 200 OK")
-					.header("Content-Type", "application/json")
+				.then()					
 				.extract()
 					.response();				
 		
@@ -79,16 +76,14 @@ public class SWAPITest {
 			}
 			else {
 				log.info("Doesn't Match...");
-			}		
-			
+			}			
 		}
-		log.info(nameList);
+		log.info(nameList);		
 		
-		// convert ArrayList to Json
 		Gson gson = new Gson();
-		String jsonConvert = gson.toJson(nameList);
+		String jsonConvert = gson.toJson(nameList);	
 		
-		Assert.assertTrue(jsonConvert.contains("Darth Vader"));
+		Assert.assertTrue(jsonConvert.contains("Darth Vader"));	// testing that correct name is present in body	
 	}
 	
 }
