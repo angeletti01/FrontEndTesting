@@ -42,4 +42,53 @@ public class SWAPITest {
 		.extract()
 			.response();		
 	}
+	@Test
+	public void nameTest() {
+		Response response = 	
+				RestAssured
+				.given()
+					.contentType(ContentType.JSON)	
+					.baseUri(BASEURI+BASEPATH)	
+				.when()
+					.get()
+				.then()
+					.assertThat()
+					.statusCode(200)
+					.statusLine("HTTP/1.1 200 OK")
+					.header("Content-Type", "application/json")
+				.extract()
+					.response();				
+		
+			// Convert JSON object to String object
+			JsonPath jsonResponse = new JsonPath(response.asString());
+		
+		// Get values of JSON array after getting array size	
+		int jsonArraySize = jsonResponse.getInt("results.size()");
+		List<String> nameList = new ArrayList<String>();
+		
+		for(int i = 0; i< jsonArraySize;i++){
+			String height = jsonResponse.getString("results["+i+"].height");
+			
+			// convert string to int 
+			int stringToInt = Integer.parseInt(height);
+			log.info("Height: "+stringToInt);
+			// Check if condition meets criteria
+			if(stringToInt > 200) {
+				nameList.add(jsonResponse.getString("results["+i+"]")); // store complete object
+				log.info("Object Stored!!!");			
+			}
+			else {
+				log.info("Doesn't Match...");
+			}		
+			
+		}
+		log.info(nameList);
+		
+		// convert ArrayList to Json
+		Gson gson = new Gson();
+		String jsonConvert = gson.toJson(nameList);
+		
+		Assert.assertTrue(jsonConvert.contains("Darth Vader"));
+	}
+	
 }
